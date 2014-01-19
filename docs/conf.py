@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=E501, E122
+# pymode:lint_ignore=E501, E122
 #
 # pkifiles documentation build configuration file, created by
 # sphinx-quickstart on Sun Jan 19 20:59:27 2014.
@@ -16,10 +18,11 @@ import sys
 import os
 import vcversioner
 
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
 
