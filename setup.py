@@ -22,7 +22,7 @@ setup(
     name='pkiutils',
     description='a set of public key infrastructure utilities',
     long_description=DESCRIPTION,
-    install_requires=['pycrypto'],
+    install_requires=['pycrypto', 'pyasn1', 'pyasn1_modules'],
     version='0.1',
     author=__author__,
     author_email='jan@dittberner.info',
