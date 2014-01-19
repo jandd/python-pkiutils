@@ -1,2 +1,6 @@
+*.pem
+*.pyc
 .*.swp
+.ropeproject/
+dist/
 pkiutils.egg-info
