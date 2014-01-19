@@ -28,20 +28,20 @@ def create_rsa_key(bits=2048,
     """
     Generate a new RSA key with the specified key size.
 
-    bits
+    :param int bits:
         bit size of the key modulus
 
-    keyfile
+    :param str keyfile:
         file the key should be written to
 
-    format
+    :param str format:
         format for the key file, either PEM or DER
 
-    passphrase
+    :param str passphrase:
         pass phrase for encrypting the key file. If pass phrase is a callable
         its return value will be used.
 
-    returns
+    :return:
         RSA private key instance
     """
     if passphrase and format != 'PEM':
@@ -280,18 +280,21 @@ def create_csr(key, dn, csrfilename=None, attributes=None):
     """
     Generates a Certificate Signing Request for a given key.
 
-    key
+    :param Crypto.PublicKey.RSA._RSAobj key:
         a key
 
-    dn
+    :param dn:
         a distinguished name as dictionary or string with key=value pairs
-        separated by slashes like '/CN=test.example.org/C=DE/O=Test
-        organisation/'
+        separated by slashes like ``/CN=test.example.org/C=DE/O=Test
+        organisation/``
 
-    attributes
-        a dictionary of attributes to be included in the CSR
+    :param str csrfilename:
+        name of a file to write the CSR to
 
-    returns
+    :param tuple attributes:
+        a tuple describing attributes to be included in the CSR
+
+    :return:
         a certificate signing request
 
     """
