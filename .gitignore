@@ -3,4 +3,5 @@
 .*.swp
 .ropeproject/
 dist/
+docs/_build/
 pkiutils.egg-info

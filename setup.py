@@ -23,9 +23,11 @@ setup(
     description='a set of public key infrastructure utilities',
     long_description=DESCRIPTION,
     install_requires=['pycrypto', 'pyasn1', 'pyasn1_modules'],
-    version='0.1',
+    setup_requires=['vcversioner'],
+    vcversioner={},
     author=__author__,
     author_email='jan@dittberner.info',
+    url='https://github.com/jandd/python-pkiutils',
     packages=find_packages(),
     license='MIT',
 )
