@@ -20,6 +20,14 @@ Installation
 
 python setup.py install
 
+Documentation
+=============
+
+Pkiutils is documented using `Sphinx`_, you can read the documentation at
+`<http://python-pkiutils.readthedocs.org/>`_.
+
+.. _Sphinx: http://sphinx-doc.org/
+
 License
 =======
 
