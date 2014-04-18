@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
@@ -326,3 +326,5 @@ def create_csr(key, dn, csrfilename=None, attributes=None):
         with open(csrfilename, 'w') as csrfile:
             csrfile.write(output)
     log.info("generated certification request:\n\n%s", output)
+    return output
+
