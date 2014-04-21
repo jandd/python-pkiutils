@@ -18,7 +18,7 @@ id_at_pkcs9_extension_request = univ.ObjectIdentifier('1.2.840.113549.1.9.14')
 
 def _der_to_pem(derbytes, typestr):
     pem = "-----BEGIN {0}-----\n".format(typestr)
-    pem += base64.encodestring(derbytes)
+    pem += base64.encodestring(derbytes).decode()
     pem += "-----END {0}-----".format(typestr)
     return pem
 
@@ -147,7 +147,8 @@ def _build_subject_publickey_info(key):
 def _build_signature(key, certreqinfo):
     hashvalue = SHA.new(encoder.encode(certreqinfo))
     signer = PKCS1_v1_5.new(key)
-    signaturevalue = "'{0}'H".format(binascii.hexlify(signer.sign(hashvalue)))
+    signaturevalue = "'{0}'H".format(binascii.hexlify(signer.sign(hashvalue)).decode())
+    logging.debug("signaturevalue: %s" % signaturevalue)
 
     return rfc2314.Signature(signaturevalue)
 
@@ -158,7 +159,7 @@ def _ip_str_to_octets(ipstr):
         af = AF_INET6
     else:
         af = AF_INET
-    return binascii.hexlify(inet_pton(af, ipstr))
+    return binascii.hexlify(inet_pton(af, ipstr)).decode()
 
 
 def _build_general_name(generalname):
