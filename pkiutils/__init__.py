@@ -7,6 +7,7 @@ from pyasn1_modules import rfc2314
 from pyasn1.codec.der import encoder, decoder
 from pyasn1.type import univ
 import base64
+import binascii
 import logging
 import collections
 
@@ -146,7 +147,7 @@ def _build_subject_publickey_info(key):
 def _build_signature(key, certreqinfo):
     hashvalue = SHA.new(encoder.encode(certreqinfo))
     signer = PKCS1_v1_5.new(key)
-    signaturevalue = "'{0}'H".format(signer.sign(hashvalue).encode('hex'))
+    signaturevalue = "'{0}'H".format(binascii.hexlify(signer.sign(hashvalue)))
 
     return rfc2314.Signature(signaturevalue)
 
@@ -157,7 +158,7 @@ def _ip_str_to_octets(ipstr):
         af = AF_INET6
     else:
         af = AF_INET
-    return inet_pton(af, ipstr).encode('hex')
+    return binascii.hexlify(inet_pton(af, ipstr))
 
 
 def _build_general_name(generalname):
