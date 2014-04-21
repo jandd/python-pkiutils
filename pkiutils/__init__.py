@@ -8,6 +8,7 @@ from pyasn1.codec.der import encoder, decoder
 from pyasn1.type import univ
 import base64
 import logging
+import collections
 
 log = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ def create_rsa_key(bits=2048,
         raise Exception(
             "passphrase is only supported for PEM encoded private keys")
     rsakey = RSA.generate(bits)
-    if passphrase and callable(passphrase):
+    if passphrase and isinstance(passphrase, collections.Callable):
         passphrase = passphrase()
     output = rsakey.exportKey(format=format, passphrase=passphrase)
     if keyfile:
@@ -124,7 +125,7 @@ def _build_dn(dnspec):
                 dndict[key] = value
     dnparts = rfc2314.RDNSequence()
     count = 0
-    for key, value in dndict.iteritems():
+    for key, value in dndict.items():
         rdn = rfc2314.RelativeDistinguishedName()
         rdn.setComponentByPosition(0, _build_dn_component(key, value))
         dnparts.setComponentByPosition(count, rdn)
@@ -179,7 +180,7 @@ def _build_general_name(generalname):
 
 
 def _build_subject_alt_name(value):
-    if isinstance(value, basestring):
+    if isinstance(value, str):
         value = (value,)
     retval = rfc2314.SubjectAltName()
     count = 0
@@ -268,7 +269,7 @@ def _build_attributes(attributes, attrtype):
         return attrtype
     attr = attrtype.clone()
     count = 0
-    for key, value in attributes.items():
+    for key, value in list(attributes.items()):
         attritem = _build_attribute(key, value)
         if attritem:
             attr.setComponentByPosition(count, attritem)
