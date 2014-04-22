@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
@@ -7,7 +7,9 @@ from pyasn1_modules import rfc2314
 from pyasn1.codec.der import encoder, decoder
 from pyasn1.type import univ
 import base64
+import binascii
 import logging
+import collections
 
 log = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ id_at_pkcs9_extension_request = univ.ObjectIdentifier('1.2.840.113549.1.9.14')
 
 def _der_to_pem(derbytes, typestr):
     pem = "-----BEGIN {0}-----\n".format(typestr)
-    pem += base64.encodestring(derbytes)
+    pem += base64.encodestring(derbytes).decode()
     pem += "-----END {0}-----".format(typestr)
     return pem
 
@@ -48,7 +50,7 @@ def create_rsa_key(bits=2048,
         raise Exception(
             "passphrase is only supported for PEM encoded private keys")
     rsakey = RSA.generate(bits)
-    if passphrase and callable(passphrase):
+    if passphrase and isinstance(passphrase, collections.Callable):
         passphrase = passphrase()
     output = rsakey.exportKey(format=format, passphrase=passphrase)
     if keyfile:
@@ -124,7 +126,7 @@ def _build_dn(dnspec):
                 dndict[key] = value
     dnparts = rfc2314.RDNSequence()
     count = 0
-    for key, value in dndict.iteritems():
+    for key, value in dndict.items():
         rdn = rfc2314.RelativeDistinguishedName()
         rdn.setComponentByPosition(0, _build_dn_component(key, value))
         dnparts.setComponentByPosition(count, rdn)
@@ -145,7 +147,8 @@ def _build_subject_publickey_info(key):
 def _build_signature(key, certreqinfo):
     hashvalue = SHA.new(encoder.encode(certreqinfo))
     signer = PKCS1_v1_5.new(key)
-    signaturevalue = "'{0}'H".format(signer.sign(hashvalue).encode('hex'))
+    signaturevalue = "'{0}'H".format(binascii.hexlify(signer.sign(hashvalue)).decode())
+    logging.debug("signaturevalue: %s" % signaturevalue)
 
     return rfc2314.Signature(signaturevalue)
 
@@ -156,7 +159,7 @@ def _ip_str_to_octets(ipstr):
         af = AF_INET6
     else:
         af = AF_INET
-    return inet_pton(af, ipstr).encode('hex')
+    return binascii.hexlify(inet_pton(af, ipstr)).decode()
 
 
 def _build_general_name(generalname):
@@ -179,7 +182,7 @@ def _build_general_name(generalname):
 
 
 def _build_subject_alt_name(value):
-    if isinstance(value, basestring):
+    if isinstance(value, str):
         value = (value,)
     retval = rfc2314.SubjectAltName()
     count = 0
@@ -268,7 +271,7 @@ def _build_attributes(attributes, attrtype):
         return attrtype
     attr = attrtype.clone()
     count = 0
-    for key, value in attributes.items():
+    for key, value in list(attributes.items()):
         attritem = _build_attribute(key, value)
         if attritem:
             attr.setComponentByPosition(count, attritem)
@@ -326,3 +329,5 @@ def create_csr(key, dn, csrfilename=None, attributes=None):
         with open(csrfilename, 'w') as csrfile:
             csrfile.write(output)
     log.info("generated certification request:\n\n%s", output)
+    return output
+
