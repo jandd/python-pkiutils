@@ -24,7 +24,7 @@ Installation Methods
 1. From source cloned from Github
 
 .. code-block::
-  python setup.py install'''
+  python setup.py install
 
 2. Using pip or easy_install
 
@@ -39,6 +39,10 @@ Example Usage
   key = pkiutils.create_rsa_key(2048, keyfile='/root/www.example.com.key')
   pkiutils.create_csr(key, dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com", csrfilename='/root/www.example.com.csr')
 
+.. code-block::
+  import pkiutils
+  key = pkiutils.create_rsa_key(2048, keyfile='/root/www.example.com.key')
+  pkiutils.create_csr(key, dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com", csrfilename='/root/www.example.com.csr')
 
 From here you would provide your certification authority the contents of '/root/www.example.com.csr'
 
