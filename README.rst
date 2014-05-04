@@ -31,6 +31,11 @@ Installation Methods
 
 Example Usage
 =============
+When you need a 3rd party SSL certificate you will be asked for a CSR
+(Certificate Signing Request). The follwoing commands will generate your
+personal key and the CSR file required nad output them to /root
+
+
 .. code-block:: python
 
     import pkiutils
