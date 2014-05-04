@@ -23,23 +23,23 @@ Installation Methods
 
 1. From source cloned from Github
 
-.. code-block::
+.. code::
   python setup.py install
 
 2. Using pip or easy_install
 
-.. code-block::
+.. code::
   pip install pkiutils'''
 
 Example Usage
 =============
 
-.. code-block::
+.. code:: python
   import pkiutils
   key = pkiutils.create_rsa_key(2048, keyfile='/root/www.example.com.key')
   pkiutils.create_csr(key, dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com", csrfilename='/root/www.example.com.csr')
 
-.. code-block::
+.. code:: python
   import pkiutils
   key = pkiutils.create_rsa_key(2048, keyfile='/root/www.example.com.key')
   pkiutils.create_csr(key, dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com", csrfilename='/root/www.example.com.csr')
