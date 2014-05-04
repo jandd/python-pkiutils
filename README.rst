@@ -27,16 +27,10 @@ Installation Methods
 
 2. Using pip or easy_install
 ::
-    $pip install pkiutils'''
+    $pip install pkiutils
 
 Example Usage
 =============
-.. code-block:: python
-
-    import pkiutils
-    key = pkiutils.create_rsa_key(2048, keyfile='/root/www.example.com.key')
-    pkiutils.create_csr(key, dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com", csrfilename='/root/www.example.com.csr')
-
 .. code-block:: python
 
     import pkiutils
