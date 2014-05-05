@@ -15,8 +15,7 @@ public key infrastructure material like:
 .. _pyasn1: http://pyasn1.sourceforge.net/
 .. _PKCS#10: http://tools.ietf.org/html/rfc2986
 
-This library can be used to produce a Certificate Signing Requtest when
-producing a ew SSL cert for your domain/server.
+This library can be used to produce RSA key pairs and corresponding certificate signing requests that can be used to request a new SSL certificate for your domain/server.
 
 Installation Methods
 ====================
@@ -31,16 +30,20 @@ Installation Methods
 
 Example Usage
 =============
+
 When you need a 3rd party SSL certificate you will be asked for a CSR
-(Certificate Signing Request). The follwoing commands will generate your
-personal key and the CSR file required nad output them to /root
+(certificate signing request). The following commands will generate your
+personal key and the CSR file required and output them to /root
 
 
 .. code-block:: python
 
     import pkiutils
+    
     key = pkiutils.create_rsa_key(2048, keyfile='/root/www.example.com.key')
-    pkiutils.create_csr(key, dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com", csrfilename='/root/www.example.com.csr')
+    pkiutils.create_csr(key,
+                        dn="/C=GB/ST=STATENAME/L=LOCAILITY/O=COMPANY/OU=DEPT/CN=www.example.com",
+                        csrfilename='/root/www.example.com.csr')
 
 From here you would provide your certification authority the contents of '/root/www.example.com.csr'
 
