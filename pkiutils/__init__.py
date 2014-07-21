@@ -119,14 +119,14 @@ def _build_dn(dnspec):
     if isinstance(dnspec, dict):
         dndict = dnspec
     else:
-        dndict = {}
+        dndict = []
         for pair in dnspec.split('/'):
             if pair.find('=') >= 0:
                 key, value = pair.split('=', 1)
-                dndict[key] = value
+                dndict.append((key, value))
     dnparts = rfc2314.RDNSequence()
     count = 0
-    for key, value in dndict.items():
+    for key, value in dndict:
         rdn = rfc2314.RelativeDistinguishedName()
         rdn.setComponentByPosition(0, _build_dn_component(key, value))
         dnparts.setComponentByPosition(count, rdn)
@@ -154,12 +154,14 @@ def _build_signature(key, certreqinfo):
 
 
 def _ip_str_to_octets(ipstr):
-    from socket import inet_pton, AF_INET, AF_INET6
+    from netaddr import IPAddress
+    ip = IPAddress(ipstr)
+    hexstr=int(ip)
     if ':' in ipstr:
-        af = AF_INET6
+        hexstr = "%032x" % hexstr
     else:
-        af = AF_INET
-    return binascii.hexlify(inet_pton(af, ipstr)).decode()
+        hexstr = "%08x" % hexstr
+    return hexstr
 
 
 def _build_general_name(generalname):
@@ -182,7 +184,7 @@ def _build_general_name(generalname):
 
 
 def _build_subject_alt_name(value):
-    if isinstance(value, str):
+    if isinstance(value, str) or isinstance(value, unicode):
         value = (value,)
     retval = rfc2314.SubjectAltName()
     count = 0
