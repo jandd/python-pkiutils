@@ -2,7 +2,7 @@
 
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
-from Crypto.Hash import SHA
+from Crypto.Hash import SHA256
 from pyasn1_modules import rfc2314
 from pyasn1.codec.der import encoder, decoder
 from pyasn1.type import univ
@@ -145,7 +145,7 @@ def _build_subject_publickey_info(key):
 
 
 def _build_signature(key, certreqinfo):
-    hashvalue = SHA.new(encoder.encode(certreqinfo))
+    hashvalue = SHA256.new(encoder.encode(certreqinfo))
     signer = PKCS1_v1_5.new(key)
     signaturevalue = "'{0}'H".format(binascii.hexlify(signer.sign(hashvalue)).decode())
     logging.debug("signaturevalue: %s" % signaturevalue)
@@ -318,7 +318,7 @@ def create_csr(key, dn, csrfilename=None, attributes=None):
 
     sigAlgIdentifier = rfc2314.SignatureAlgorithmIdentifier()
     sigAlgIdentifier.setComponentByName(
-        'algorithm', rfc2314.sha1WithRSAEncryption)
+        'algorithm', univ.ObjectIdentifier('1.2.840.113549.1.1.11'))
     certreq.setComponentByName(
         'signatureAlgorithm',
         sigAlgIdentifier)
