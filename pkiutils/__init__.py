@@ -54,8 +54,9 @@ def create_rsa_key(bits=2048,
         passphrase = passphrase()
     output = rsakey.exportKey(format=format, passphrase=passphrase)
     if keyfile:
-        with open(keyfile, 'w') as outputfile:
+        with open(keyfile, 'wb') as outputfile:
             outputfile.write(output)
+
     log.info("generated private key:\n\n%s", output)
     return rsakey
 
